@@ -1,0 +1,123 @@
+<!DOCTYPE html><html><head>
+<meta charset="UTF-8">
+<title>Password Generator Options</title>
+<style>
+body{
+  background-color:#ddd;
+  color:#888;
+  font-family:arial,verdana,sans-serif;
+  text-shadow:0px 1px 0px white;
+}
+section#main {
+  width:400px;
+  margin:0 auto;
+}
+label {
+  display:block;
+  margin-bottom:4px;
+  text-indent:10px;
+  padding-left:1.5em;
+  text-indent:-1.5em;
+}
+section.formset {
+  padding:10px;
+  margin-bottom:10px;
+  background-color:#d9d9d9;
+  border:1px solid #eee;
+  border-radius:5px;
+}
+section.formset h1 {
+  font-size:18px;
+  color:#777;
+  margin-top:0;
+}
+</style>
+<script type="text/javascript">
+
+function save_box_click(e) {
+  if(e.target && e.target.nodeName == "INPUT") {
+    var new_save_val = e.target.value;
+    if(new_save_val=="never") {
+      delete localStorage['master_password'];
+      set_session_pass(null);
+    } else if(new_save_val=="session") {
+      if(typeof localStorage['master_password']=="string") {
+        set_session_pass(localStorage['master_password']);
+      }
+      delete localStorage['master_password'];
+    } else {
+      var session_pass = get_session_pass();
+      if(typeof session_pass=="string") {
+        localStorage['master_password']=session_pass;
+      }
+      set_session_pass(null);
+
+    }
+    localStorage['save_pass']=new_save_val;
+  }
+}
+function end_with_box_click(e) {
+  if(e.target && e.target.nodeName == "INPUT") {
+    var new_compat_mode_option = e.target.value;
+    localStorage['endwith']=new_compat_mode_option;
+  }
+}
+
+if(!localStorage['save_pass']) {
+  localStorage['save_pass']="never";
+} else if (localStorage['save_pass']==="true") {
+  localStorage['save_pass']="always";
+}
+
+var background = chrome.extension.getBackgroundPage();
+
+window.onload = function() {
+  var option = document.getElementById('save_' + localStorage['save_pass']);
+  if(!option) {
+    option = document.getElementById('save_never');
+  }
+  option.checked=true;
+
+  if(localStorage['endwith']=="1a") {
+    var option = document.getElementById('end_1a');
+  } else {
+    var option = document.getElementById('end_1a!');
+  }
+  option.checked=true;
+
+  var options = document.getElementById('save_options');
+  options.addEventListener('click',save_box_click,true);
+  var compatibilityOptions = document.getElementById('compatibility_options');
+  compatibilityOptions.addEventListener('click',end_with_box_click,true);
+}
+function set_session_pass(val) {
+  if(val===null) {
+    delete background.sessionStorage['master_password'];
+  } else {
+    background.sessionStorage['master_password']=val;
+  }
+}
+function get_session_pass() {
+  return background.sessionStorage['master_password'];
+}
+
+</script>
+</head><body>
+<section id="main">
+<h1>Options</h1>
+<section id="save_options" class="formset">
+<h1>Save master password:</h1>
+<label><input id="save_never" name="savemaster" type="radio" value="never" /><strong>Never</strong> save password</label>
+<label><input id="save_session" name="savemaster" type="radio" value="session" /><strong>Session</strong> only</label>
+<label><input id="save_always" name="savemaster" type="radio" value="always" /><strong>Always</strong> save password</label>
+</section>
+
+<section id="compatibility_options" class="formset">
+<h1>All passwords end with:</h1>
+<label><input id="end_1a!" name="endwith" type="radio" value="1a!" /><strong>1a!</strong> - Useful for sites that require a punctuation character</label>
+<label><input id="end_1a" name="endwith" type="radio" value="1a" /><strong>1a</strong> only - for 100% compatibility with <a target="_blank" href="http://angel.net/~nic/passwd.sha1.1a.html">Angel.net</a> without having to remove a trailing "!" character.</label>
+
+</section>
+</section>
+</body></html>
+
