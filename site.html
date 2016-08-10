@@ -1,0 +1,84 @@
+<style>
+  body {
+    color:#ccc;
+    font-size:20px;
+    margin:0;
+    font-family:sans-serif;
+  }
+  html {
+    margin:0;
+    padding:0;
+  }
+  dl dt:first-child {
+    margin-top:0;
+  }
+  dt {
+    margin:5px 0 2px 0;
+  }
+  dd {
+    margin:0;
+    padding-left:0;
+  }
+  dl {
+    margin:0;
+  }
+  form {
+    padding:5px;
+    width:400px;
+    background-color:#333;
+    border-radius:3px;
+    margin:0;
+  }
+  db {
+    cursor:pointer;
+    display:block;
+    background-color:#757575;
+    background:-webkit-gradient(linear, 0% 0%, 0% 95%, from(#777), to(#555));
+    border:1px solid #222;
+    border-radius:6px;
+    margin-top:15px;
+    padding:3px 0;
+    font-weight:bold;
+    color:black;
+    width:400px;
+    text-shadow: 0px 1px 0px #777;
+    margin:12px 0;
+  }
+  db:hover {
+    border-color:#777;
+  }
+  input[type="text"],input[type="password"] {
+    font-size:20px;
+    background-color:#222;
+    color:#c98910;
+    border:1px solid #666;
+    margin:0;
+    padding:0;
+    height:1.5em;
+    width:400px;
+  }
+  input[type="checkbox"] {
+    position:relative;
+    top:3px;
+  }
+  dt#output {
+    border-top:1px dotted #777;
+    padding-top:8px;
+  }
+  dt#save {
+    float:left;
+  }
+</style>
+
+<script src="popup.js"></script>
+
+<form name="f" onSubmit="return false;">
+  <dl>
+    <dt>Master Password</dt>
+    <dd><input name="master" type="password" /></dd>
+    <dt>Site Name</dt>
+    <dd><input id="site" id="site" name="site" type="text" /></dd>
+    <db id="output">Generated Pass</db>
+    <dd><input name="password" type="text" /></dd>
+  </dl>
+</form>
